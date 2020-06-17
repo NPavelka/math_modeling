@@ -12,8 +12,7 @@ while n > 1:
             n = n // d
             print(d, end = ' ')
             stop = 1
-            break
-        
+            
         else:
             d = d + 1
             
