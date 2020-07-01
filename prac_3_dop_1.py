@@ -1,10 +1,10 @@
 print('----------------------------Dop_Zadanie_1-----------------------------')
 import numpy as np
 
-N = int(input('Введите кол-во строк: '))
-M = int(input('Введите кол-во столбцов: '))
+M = int(input('Введите кол-во строк: '))
+N = int(input('Введите кол-во столбцов: '))
 
-A = np.ndarray(shape = (N, M))
+A = np.ndarray(shape = (M, N))
 
 print()
 print('Заполнение первого массива')
@@ -20,7 +20,7 @@ for k in range(0, M, 1):
      
 print(A)
 
-B = np.ndarray(shape = (N, M))
+B = np.ndarray(shape = (M, N))
 
 
 print('Заполнение второго массива')
@@ -39,7 +39,7 @@ print(B)
 print()
 print('Вывод третьего массива')
 
-C = np.ndarray(shape = (N, M))
+C = np.ndarray(shape = (M, N))
 for k in range(0, M, 1):
     for i in range(0, N, 1):
         if A[k,i] >= B[k,i]:
