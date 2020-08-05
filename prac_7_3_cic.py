@@ -1,4 +1,4 @@
-print('-----------------------------Zadanie_3/1--------------------------------')
+print('-----------------------------Zadanie_3--------------------------------')
 print('Функция, строящая графики кривых, заданных параметрически: Циклоиды и Астроиды, а также анимирует движение точки по ним.')
 
 import matplotlib.pyplot as plt 
@@ -6,45 +6,46 @@ import numpy as np
 import matplotlib.animation as anim                  
 
 #Создание пространства и подпространства для анимации 
-fig, ax = plt.subplots(figsize=(12,6))              
+fig, ax = plt.subplots(figsize=(12,4))
+n = []              
 
 #Создание анимируемого объкта
-anim_object, = plt.plot([], [],color='orange', label='Cicloida')
+anim_object_1, = plt.plot([], [], 'o',color='orange', ms=5, label='Cicloida')
+anim_object_2, = plt.plot([], [], 'o', color='b', ms=4, label='Circle')
+anim_object_3, = plt.plot([], [], marker = 'o', color='r', ms=7, label='Point')  
 
-def cicloida_move(R=1, r=2, angle_vel=None, time=None):
-    """Функция строит циклоиду: кривая, описанная точкой, лежащей на окружности радиуса R, если эта окружность катится без скольжения по прямой.
+#Координаты анимируемого объекта
+xdata_1, ydata_1 = [], []
+xdata_2, ydata_2 = [], []
+xdata_3, ydata_3 = [], []   
+
+def cicloida_move(frame = None, R=2):
+    """Функция строит циклоиду с помощью движения окружности с отмеченной точкой на ней.
        На вход подаются:
+       frame - кадр
        R - радиус циклоиды
-       r - радиус окружности
-       angle_vel, time - необходимые для анимации параметры
     """
-    t = angle_vel * (np.pi / 180) * time
-    alpha = np.linspace(0, 2 * np.pi, 30)
+    t = frame
+    alpha = np.linspace(0, 2 * np.pi, 80)
     
-    x0 = R * (t - np.sin(t)) 
-    y0 = R * (1 - np.cos(t)) 
+    xdata_1.append(R * (t - np.sin(t)))
+    ydata_1.append(R * (1 - np.cos(t)))
+    anim_object_1.set_data(xdata_1, ydata_1)
+   
+    xdata_2.append(R*t + R * np.cos(alpha))
+    ydata_2.append(R + R * np.sin(alpha))
+    anim_object_2.set_data(xdata_2[len(n)-1], ydata_2[len(n)-1]) 
     
-    x = x0 + r * np.cos(alpha)
-    y = y0 + r * np.sin(alpha)
-    return x, y
+    xdata_3.append(R * (t - np.sin(t)))
+    ydata_3.append(R * (1 - np.cos(t)))
+    anim_object_3.set_data(xdata_3[len(n)-1], ydata_3[len(n)-1])
 
-def cicloida(R, angle_vel=None, time=None):
-    t = angle_vel * (np.pi / 180) * time
-    x0 = R * (t - np.sin(t)) 
-    y0 = R * (1 - np.cos(t))
-    return x0, y0
+    return anim_object_1, anim_object_2, anim_object_3,
 
 #Пределы изменения переменной X и Y
-ax.set_xlim(-1, 20)  
-ax.set_ylim(-3, 6)
+ax.set_xlim(-3, 41)  
+ax.set_ylim(-3, 8)
 
-def animate(i):
-    anim_object.set_data(cicloida_move(R = 1, r = 0.5, angle_vel = 1, time = i))
-    ax.set_title('time, frame{}'.format(i))
-
-animation_7_3 = anim.FuncAnimation(fig, animate, frames=200, interval=1)
-
-sub = cicloida(R = 1, angle_vel = 360, time = np.arange(0, 2 * np.pi, 0.01))
-plt.plot(sub[0],sub[1], color = 'g')
-
+animation_7_3 = anim.FuncAnimation(fig, cicloida_move, frames = np.linspace(0, 6 * np.pi, 300), interval=1)
+    
 animation_7_3.save('animation_7_3_cic.gif')
