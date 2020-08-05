@@ -6,44 +6,52 @@ import numpy as np
 import matplotlib.animation as anim    
 
 #Создание пространства и подпространства для анимации 
-fig, ax = plt.subplots(figsize=(8,8))              
+fig, ax = plt.subplots(figsize=(8,8)) 
+n = []              
 
 #Создание анимируемого объкта
-anim_object, = plt.plot([], [], color='red', label='Аstroida')
+anim_object_1, = plt.plot([], [], color='b', label='Аstroida')
+anim_object_2, = plt.plot([], [], color='r', label='Circle-inside')
+anim_object_3, = plt.plot([], [], color='m', label='Circle-outside')
+anim_object_4, = plt.plot([], [], marker = 'o', color='orange', ms=6, label='Point') 
 
-def astroida_move(R=1, r=2, angle_vel=None, time=None):
-    """Функция строит астроиду: кривая, описанная точкой, лежащей на окружности радиуса R, если эта окружность катится без скольжения по прямой.
+#Координаты анимируемого объекта
+xdata_1, ydata_1 = [], []
+xdata_2, ydata_2 = [], []
+xdata_3, ydata_3 = [], []
+xdata_4, ydata_4 = [], [] 
+
+def astroida_move(frame = None, R=8):
+    """Функция строит астроиду с помощью окружности: кривая, описанная точкой, лежащей на окружности радиуса R, если эта окружность катится без скольжения по прямой.
        На вход подаются:
        R - радиус окружности
-       angle_vel, time - необходимые для анимации параметры
+       frame - кадры
     """
-    t = angle_vel * (np.pi / 180) * time
-    alpha = np.linspace(0, 2 * np.pi, 30)
+    t = frame
+    alpha = np.linspace(0, 2 * np.pi, 50)
     
-    x0 = R * np.cos(t)**3
-    y0 = R * np.sin(t)**3
+    xdata_1.append(R * np.cos(t)**3)
+    ydata_1.append(R * np.sin(t)**3)
+    anim_object_1.set_data(xdata_1, ydata_1)
     
-    x = x0 + r * np.cos(alpha)
-    y = y0 + r * np.sin(alpha)
+    xdata_2.append(3*R/4 * np.cos(t) + R/4 * np.cos(alpha))
+    ydata_2.append(3*R/4 * np.sin(t) + R/4 * np.sin(alpha))    
+    anim_object_2.set_data(xdata_2[len(n)-1], ydata_2[len(n)-1])
     
-    return x, y  
+    xdata_3.append(R * np.cos(alpha))
+    ydata_3.append(R * np.sin(alpha))    
+    anim_object_3.set_data(xdata_3, ydata_3)
+    
+    xdata_4.append(R * np.cos(t)**3)
+    ydata_4.append(R * np.sin(t)**3)
+    anim_object_4.set_data(xdata_4[len(n)-1], ydata_4[len(n)-1])
+    
+    return anim_object_1, anim_object_2, anim_object_3, anim_object_4,
+  
+#Пределы изменения переменной X и Y
+ax.set_xlim(-14, 14)  
+ax.set_ylim(-14, 14)
 
-def astroida(R=1, angle_vel=None, time=None):
-    t = angle_vel * (np.pi / 180) * time
-    x = R * np.cos(t)**3
-    y = R * np.sin(t)**3
-    return x, y  
-
-ax.set_xlim(-10, 10)                                                                                #Пределы изменения переменной X
-ax.set_ylim(-10, 10)                                                                                #Пределы изменения переменной Y
-
-def animate(i):
-    anim_object.set_data(astroida_move(R = 5, r = 0.5, angle_vel = 1, time=i))
-    ax.set_title('time, day{}'.format(i))
-
-animation_7_4 = anim.FuncAnimation(fig, animate,frames=400,interval=0.1)
-
-sub = astroida(R = 5, angle_vel = 1080,time = np.arange(0, 2 * np.pi, 0.01))
-plt.plot(sub[0],sub[1], color = 'b')
+animation_7_4 = anim.FuncAnimation(fig, astroida_move, frames = np.linspace(0, 6 * np.pi, 300), interval=1)
 
 animation_7_4.save('animation_7_4_ast.gif')
