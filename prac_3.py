@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 t = np.linspace(0, 30, 100)  #секунды
 
 def sopr_func(V,t):
-    dVdt = F / m + (y * V**2) / m
+    dVdt = F / m - (y * V**2) / m
     return dVdt
 
 #Определение начальных условий и параметров
