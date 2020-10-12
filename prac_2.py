@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 #import matplotlib.animation as anim
 
 #Пределы изменения переменной величины
-t = np.linspace(0,1460,365)  #дни
+t = np.linspace(0, 1460, 365)  #дни
 
-def Inf_func(I,t):
-    dIdt = - I * k
+def Inf_func(I, t):
+    dIdt = - I * k * t
     return dIdt
 
 #Определение начальных условий и параметров
