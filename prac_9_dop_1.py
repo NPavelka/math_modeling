@@ -8,27 +8,34 @@ import matplotlib.pyplot as plt
 #import matplotlib.animation as anim
 
 #Пределы изменения переменной величины
-t = np.linspace(0, 30, 100)  #секунды
+theta = np.linspace(0, 2*np.pi, 3600)  #радианы
 
-def sopr_func(V,t):
-    dVdt = F / m - (y * V**2) / m
-    return dVdt
+def W_func(q, theta):
+    Vq =  ((G * M / a) * ((1 + e) / (1 - e)))**0.5
+    dWdt = (L * S) / (4 * np.pi * q * Vq)   
+    return dWdt
 
 #Определение начальных условий и параметров
-F = 8                      #сила, H
-m = 15                     #масса, кг
-y_0 = 0.06                 #коэффициент
-V_0 = 0                    #Начальная скорость
+G = 6.67 * 10**(-11)        #Гравитационная постоянная
+L = 3.88 * 10**26           #Светимость звезды
+a = 1 * 1.496*11            #Большая полуось планеты 
+e = 0.0167                  #Эксцентриситет планеты
+R = 6378140                 #Радиус планеты
+M = 1.989 * 10**30          #Масса звезды
+
+S = np.pi * R**2            #площадь поперечного сечения планеты
+q_0 = a * (1 - e)           #Перецентр планеты
+#Vq_0 = ((G * M / a) * ((1 + e) / (1 - e)))**0.5
 
 #Решение дифференциального уравнения функцией odeint
-y = y_0
-solve_i = odeint(sopr_func, V_0, t)
+q = q_0
+solve_i = odeint(W_func, q, theta)
 
 #Построение решения в виде графика функции
-plt.plot(t, solve_i[:,0], color='c', label='Изменение скорости')
+plt.plot(theta, solve_i[:,0], color='orange', label='Световая энергия')
 
-plt.xlabel('Время, t, с')
-plt.ylabel('Скорость, V, м/с')
+plt.xlabel('Изменение угла Тэта в радианах')
+plt.ylabel('Световая энергия')
 plt.legend()
 plt.grid()
 plt.show()
